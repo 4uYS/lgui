@@ -1,0 +1,44 @@
+[build-system]
+requires = ["setuptools>=45", "wheel", "setuptools_scm[toml]>=6.2"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "lGUI"
+version = "0.1.0"
+description = "轻量级声明式 GUI 库 - Lightweight Declarative GUI Library"
+readme = "README.md"
+license = {text = "MIT"}
+requires-python = ">=3.7"
+authors = [
+    {name = "lGUI Team", email = "lgui@example.com"},
+]
+keywords = ["gui", "tkinter", "declarative", "layout", "shorthand", "widget"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Topic :: Software Development :: User Interfaces",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Operating System :: OS Independent",
+]
+
+[project.optional-dependencies]
+pillow = ["Pillow>=8.0.0"]
+qt = ["PyQt5>=5.15.0"]
+dev = ["pytest>=6.0", "black>=21.0", "flake8>=3.9", "twine>=3.4", "build>=0.5"]
+
+[project.urls]
+Homepage = "https://github.com/lgui-team/lgui"
+Documentation = "https://lgui.readthedocs.io"
+Repository = "https://github.com/lgui-team/lgui"
+Issues = "https://github.com/lgui-team/lgui/issues"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["lGUI*"]
