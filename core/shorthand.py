@@ -230,11 +230,11 @@ class ShorthandParser:
             return None
 
         # 整数
-        if re.match(r"^-?\d+$", value):
+        if re.match(r"^-?\\d+$", value):
             return int(value)
 
         # 浮点数
-        if re.match(r"^-?\d+\.\d+$", value):
+        if re.match(r"^-?\\d+\\.\\d+$", value):
             return float(value)
 
         # 元组（如 shadow=(2,2,#000,0.3)）

@@ -39,135 +39,95 @@ def get_theme():
 
 # 简写组件快捷导入
 class _ShorthandWidgets:
-    """简写组件访问器"""
+    """简写组件访问器 - 延迟导入避免循环依赖"""
+    pass
 
-    @staticmethod
-    def B(text="", **kwargs):
-        """Button 简写"""
-        from .widgets.controls import Button
-        return Button(text, **kwargs)
+def _make_shorthand(widget_type):
+    """动态创建简写函数"""
+    def shorthand(*args, **kwargs):
+        from .core.shorthand import ShorthandParser
+        if widget_type == "B":
+            from .widgets.controls import Button
+            text = args[0] if args else kwargs.pop("text", "")
+            return Button(text, **kwargs)
+        elif widget_type == "I":
+            from .widgets.controls import Input
+            placeholder = args[0] if args else kwargs.pop("placeholder", "")
+            return Input(placeholder=placeholder, **kwargs)
+        elif widget_type == "L":
+            from .widgets.controls import Label
+            text = args[0] if args else kwargs.pop("text", "")
+            return Label(text, **kwargs)
+        elif widget_type == "C":
+            from .widgets.controls import Checkbox
+            text = args[0] if args else kwargs.pop("text", "")
+            return Checkbox(text, **kwargs)
+        elif widget_type == "R":
+            from .widgets.controls import Radio
+            return Radio(*args, **kwargs)
+        elif widget_type == "D":
+            from .widgets.controls import Dropdown
+            return Dropdown(*args, **kwargs)
+        elif widget_type == "S":
+            from .widgets.controls import Slider
+            return Slider(**kwargs)
+        elif widget_type == "H":
+            from .widgets.containers import HBox
+            return HBox(list(args) if args else kwargs.pop("children", []), **kwargs)
+        elif widget_type == "V":
+            from .widgets.containers import VBox
+            return VBox(list(args) if args else kwargs.pop("children", []), **kwargs)
+        elif widget_type == "G":
+            from .widgets.containers import Grid
+            return Grid(list(args) if args else kwargs.pop("children", []), **kwargs)
+        elif widget_type == "T":
+            from .widgets.containers import Tabs
+            return Tabs(list(args) if args else kwargs.pop("children", []), **kwargs)
+        elif widget_type == "F":
+            from .widgets.containers import Form
+            return Form(list(args) if args else kwargs.pop("children", []), **kwargs)
+        elif widget_type == "CARD":
+            from .widgets.containers import Card
+            return Card(list(args) if args else kwargs.pop("children", []), **kwargs)
+        elif widget_type == "IMG":
+            from .widgets.controls import Image
+            src = args[0] if args else kwargs.pop("src", "")
+            return Image(src, **kwargs)
+        elif widget_type == "HR":
+            from .widgets.controls import Divider
+            return Divider(**kwargs)
+        elif widget_type == "PROG":
+            from .widgets.controls import Progress
+            value = args[0] if args else kwargs.pop("value", 0)
+            return Progress(value, **kwargs)
+        elif widget_type == "DATE":
+            from .widgets.controls import DatePicker
+            return DatePicker(**kwargs)
+        elif widget_type == "COLOR":
+            from .widgets.controls import ColorPicker
+            return ColorPicker(**kwargs)
+        return None
+    return shorthand
 
-    @staticmethod
-    def I(placeholder="", **kwargs):
-        """Input 简写"""
-        from .widgets.controls import Input
-        return Input(placeholder=placeholder, **kwargs)
-
-    @staticmethod
-    def L(text="", **kwargs):
-        """Label 简写"""
-        from .widgets.controls import Label
-        return Label(text, **kwargs)
-
-    @staticmethod
-    def C(text="", **kwargs):
-        """Checkbox 简写"""
-        from .widgets.controls import Checkbox
-        return Checkbox(text, **kwargs)
-
-    @staticmethod
-    def R(options=None, **kwargs):
-        """Radio 简写"""
-        from .widgets.controls import Radio
-        return Radio(options=options, **kwargs)
-
-    @staticmethod
-    def D(options=None, **kwargs):
-        """Dropdown 简写"""
-        from .widgets.controls import Dropdown
-        return Dropdown(options=options, **kwargs)
-
-    @staticmethod
-    def S(**kwargs):
-        """Slider 简写"""
-        from .widgets.controls import Slider
-        return Slider(**kwargs)
-
-    @staticmethod
-    def H(*children, **kwargs):
-        """HBox 简写"""
-        from .widgets.containers import HBox
-        return HBox(list(children), **kwargs)
-
-    @staticmethod
-    def V(*children, **kwargs):
-        """VBox 简写"""
-        from .widgets.containers import VBox
-        return VBox(list(children), **kwargs)
-
-    @staticmethod
-    def G(*children, **kwargs):
-        """Grid 简写"""
-        from .widgets.containers import Grid
-        return Grid(list(children), **kwargs)
-
-    @staticmethod
-    def T(*tabs, **kwargs):
-        """Tabs 简写"""
-        from .widgets.containers import Tabs
-        return Tabs(list(tabs), **kwargs)
-
-    @staticmethod
-    def F(*fields, **kwargs):
-        """Form 简写"""
-        from .widgets.containers import Form
-        return Form(list(fields), **kwargs)
-
-    @staticmethod
-    def CARD(*children, **kwargs):
-        """Card 简写"""
-        from .widgets.containers import Card
-        return Card(list(children), **kwargs)
-
-    @staticmethod
-    def IMG(src="", **kwargs):
-        """Image 简写"""
-        from .widgets.controls import Image
-        return Image(src, **kwargs)
-
-    @staticmethod
-    def HR(**kwargs):
-        """Divider 简写"""
-        from .widgets.controls import Divider
-        return Divider(**kwargs)
-
-    @staticmethod
-    def PROG(value=0, **kwargs):
-        """Progress 简写"""
-        from .widgets.controls import Progress
-        return Progress(value, **kwargs)
-
-    @staticmethod
-    def DATE(**kwargs):
-        """DatePicker 简写"""
-        from .widgets.controls import DatePicker
-        return DatePicker(**kwargs)
-
-    @staticmethod
-    def COLOR(**kwargs):
-        """ColorPicker 简写"""
-        from .widgets.controls import ColorPicker
-        return ColorPicker(**kwargs)
-
-# 创建单例实例供直接使用
-B = _ShorthandWidgets.B
-I = _ShorthandWidgets.I
-L = _ShorthandWidgets.L
-C = _ShorthandWidgets.C
-R = _ShorthandWidgets.R
-D = _ShorthandWidgets.D
-S = _ShorthandWidgets.S
-H = _ShorthandWidgets.H
-V = _ShorthandWidgets.V
-G = _ShorthandWidgets.G
-T = _ShorthandWidgets.T
-F = _ShorthandWidgets.F
-CARD = _ShorthandWidgets.CARD
-IMG = _ShorthandWidgets.IMG
-HR = _ShorthandWidgets.HR
-PROG = _ShorthandWidgets.PROG
-DATE = _ShorthandWidgets.DATE
-COLOR = _ShorthandWidgets.COLOR
+# 创建简写函数
+B = _make_shorthand("B")
+I = _make_shorthand("I")
+L = _make_shorthand("L")
+C = _make_shorthand("C")
+R = _make_shorthand("R")
+D = _make_shorthand("D")
+S = _make_shorthand("S")
+H = _make_shorthand("H")
+V = _make_shorthand("V")
+G = _make_shorthand("G")
+T = _make_shorthand("T")
+F = _make_shorthand("F")
+CARD = _make_shorthand("CARD")
+IMG = _make_shorthand("IMG")
+HR = _make_shorthand("HR")
+PROG = _make_shorthand("PROG")
+DATE = _make_shorthand("DATE")
+COLOR = _make_shorthand("COLOR")
 
 # 导出所有公共 API
 __all__ = [
